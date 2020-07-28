@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <Version>0.1.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Nickname Pending</Authors>
+    <Product>TouchPortalApi-SDK</Product>
+    <PackageProjectUrl>https://github.com/tlewis17/TouchPortalAPI</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tlewis17/TouchPortalAPI</RepositoryUrl>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <Description>This is an SDK to interface with Touch Portal to aid in the development of C# based Plugins.</Description>
+    <Copyright>2020</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +20,13 @@
     <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
     <PackageReference Include="System.IO.Pipelines" Version="4.7.2" />
     <PackageReference Include="System.Threading.Channels" Version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

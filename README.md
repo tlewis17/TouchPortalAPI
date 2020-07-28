@@ -53,3 +53,6 @@ Update a state:
 ``` csharp
 stateService.UpdateState(new StateUpdate() { Id = obj[0].Id, Value = "Off" });
 ```
+
+## Known Issue
+* Spamming keys in subsecond intervals can cause an error to happen once in awhile so one key press will get lost, the rest should work fine. 

@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalApi", "TouchPortalApi\TouchPortalApi.csproj", "{72A8586F-B7BB-428D-8495-5ED897584405}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalApi.Tests", "TouchPortalApi.Tests\TouchPortalApi.Tests.csproj", "{2B91B153-5A36-468E-8D3F-3A3DFDA639AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{7D813440-FE9E-4FB4-8A7E-EF90AD02CEB4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalApi.ConsoleApp", "Examples\TouchPortalApi.Console\TouchPortalApi.ConsoleApp.csproj", "{EEB32A35-1F35-4B70-9CBB-2CEEAF936080}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchPortalApi.WebApp", "Examples\TouchPortalApi.WebApp\TouchPortalApi.WebApp.csproj", "{49120D56-9EA0-452E-A359-DB8406B2A150}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{563F6D2B-393B-473D-82F7-EDD0B00E574C}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalApi.Service", "Examples\TouchPortalApi.Service\TouchPortalApi.Service.csproj", "{FC64FE1C-F476-4495-B256-4941E9BA922E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72A8586F-B7BB-428D-8495-5ED897584405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72A8586F-B7BB-428D-8495-5ED897584405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72A8586F-B7BB-428D-8495-5ED897584405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72A8586F-B7BB-428D-8495-5ED897584405}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B91B153-5A36-468E-8D3F-3A3DFDA639AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B91B153-5A36-468E-8D3F-3A3DFDA639AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B91B153-5A36-468E-8D3F-3A3DFDA639AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B91B153-5A36-468E-8D3F-3A3DFDA639AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEB32A35-1F35-4B70-9CBB-2CEEAF936080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEB32A35-1F35-4B70-9CBB-2CEEAF936080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEB32A35-1F35-4B70-9CBB-2CEEAF936080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEB32A35-1F35-4B70-9CBB-2CEEAF936080}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49120D56-9EA0-452E-A359-DB8406B2A150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49120D56-9EA0-452E-A359-DB8406B2A150}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49120D56-9EA0-452E-A359-DB8406B2A150}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49120D56-9EA0-452E-A359-DB8406B2A150}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC64FE1C-F476-4495-B256-4941E9BA922E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC64FE1C-F476-4495-B256-4941E9BA922E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC64FE1C-F476-4495-B256-4941E9BA922E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC64FE1C-F476-4495-B256-4941E9BA922E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EEB32A35-1F35-4B70-9CBB-2CEEAF936080} = {7D813440-FE9E-4FB4-8A7E-EF90AD02CEB4}
+		{49120D56-9EA0-452E-A359-DB8406B2A150} = {7D813440-FE9E-4FB4-8A7E-EF90AD02CEB4}
+		{FC64FE1C-F476-4495-B256-4941E9BA922E} = {7D813440-FE9E-4FB4-8A7E-EF90AD02CEB4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2AE2CC22-3FBB-4E80-8BED-0E9A7120E033}
+	EndGlobalSection
+EndGlobal

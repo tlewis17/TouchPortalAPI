@@ -1,5 +1,7 @@
 # TouchPortalApi
 
+![.NET Core](https://github.com/tlewis17/TouchPortalAPI/workflows/.NET%20Core/badge.svg?branch=master)
+
 SDK to interface with Touch Portal API through sockets.
 Sample projects include WebApp, Console, and Worker Services.
 

@@ -19,6 +19,6 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: Pack Artifact
-      run: dotnet pack "TouchPortalApi" --output .\dist --configuration Release
+      run: dotnet pack "TouchPortalApi" --output . --configuration Release
     - name: Publish Artifact
-      run: dotnet nuget push ".\dist\*.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NuGetAPIKey }} --skip-duplicate
+      run: dotnet nuget push "*.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NuGetAPIKey }} --skip-duplicate

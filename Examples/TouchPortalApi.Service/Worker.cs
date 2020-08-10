@@ -25,7 +25,7 @@ namespace TouchPortalApi.Service {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
       // Register Events
       // Register event callbacks with ID of the button or choice id from your plugin, returned data is a list of action IDs and values from your plugin
-      _actionService.RegisterActionEvent("TouchPortal.SnoopPlugin.DCS.Action.UFC.Keypad", async (obj) => {
+      _actionService.RegisterActionEvent("TouchPortal.SnoopPlugin.DCS.Action.UFC.Keypad", (obj) => {
         Console.WriteLine($"{DateTime.Now} DCS Action Event Fired.");
         foreach (var o in obj) {
           Console.WriteLine($"Id: {o.Id} Value: {o.Value}");

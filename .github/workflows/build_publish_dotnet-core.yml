@@ -21,4 +21,4 @@ jobs:
     - name: Pack Artifact
       run: dotnet pack "TouchPortalApi" --output .\dist --configuration Release
     - name: Publish Artifact
-      run: dotnet nuget push "*.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NuGetAPIKey }} --skip-duplicate
+      run: dotnet nuget push ".\dist\*.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NuGetAPIKey }} --skip-duplicate

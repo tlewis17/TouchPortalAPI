@@ -36,21 +36,19 @@ namespace TouchPortalApi.WebApp {
       // Our services, can be retrieved through DI in constructors
       var messageProcessor = app.ApplicationServices.GetRequiredService<IMessageProcessor>();
       var stateService = app.ApplicationServices.GetRequiredService<IStateService>();
-      var actionService = app.ApplicationServices.GetRequiredService<IActionService>();
-      var choiceService = app.ApplicationServices.GetRequiredService<IChoiceService>();
 
-      // Register event callbacks with ID of the button or choice id from your plugin, returned data is a list of action IDs and values from your plugin
-      actionService.RegisterActionEvent("TouchPortal.SnoopPlugin.DCS.Action.UFC.Keypad", (obj) => {
+      // On Action Event
+      messageProcessor.OnActionEvent += (actionId, dataList) => {
         Console.WriteLine($"{DateTime.Now} DCS Action Event Fired.");
-        foreach (var o in obj) {
+        foreach (var o in dataList) {
           Console.WriteLine($"Id: {o.Id} Value: {o.Value}");
         }
-      });
+      };
 
-      // Register Choice Events - Returned data is the new value
-      choiceService.RegisterChoiceEvent("choice test", (obj) => {
+      // On List Change Event
+      messageProcessor.OnListChangeEventHandler += (actionId, value) => {
         Console.WriteLine($"{DateTime.Now} Choice Event Fired.");
-      });
+      };
 
       // Listen/Pair on app startup
       lifetime.ApplicationStarted.Register(() => {

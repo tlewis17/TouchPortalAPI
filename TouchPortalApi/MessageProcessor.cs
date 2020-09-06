@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TouchPortalApi.Configuration;
 using TouchPortalApi.Extensions;
 using TouchPortalApi.Interfaces;
+using TouchPortalApi.Models;
 using TouchPortalApi.Models.Initialization;
 using TouchPortalApi.Models.TouchPortal.Responses;
 
@@ -15,17 +16,16 @@ namespace TouchPortalApi {
     private readonly IOptionsMonitor<TouchPortalApiOptions> _options;
     private readonly ITPClient _tPClient;
     private readonly IProcessQueueingService _processQueueingService;
-    private readonly IActionService _actionService;
-    private readonly IChoiceService _choiceService;
     private readonly CancellationToken _cancellationToken;
 
+    public event ActionEventHandler OnActionEvent;
+    public event ListChangeEventHandler OnListChangeEventHandler;
+
     public MessageProcessor(IOptionsMonitor<TouchPortalApiOptions> options, ITPClient tPClient, IProcessQueueingService processQueueingService,
-      IActionService actionService, IChoiceService choiceService, CancellationToken cancellationToken = default) {
+      CancellationToken cancellationToken = default) {
       _options = options ?? throw new ArgumentNullException(nameof(options));
       _tPClient = tPClient ?? throw new ArgumentNullException(nameof(tPClient));
       _processQueueingService = processQueueingService ?? throw new ArgumentNullException(nameof(processQueueingService));
-      _actionService = actionService ?? throw new ArgumentNullException(nameof(actionService));
-      _choiceService = choiceService ?? throw new ArgumentNullException(nameof(choiceService));
       _cancellationToken = cancellationToken;
     }
 
@@ -50,8 +50,6 @@ namespace TouchPortalApi {
     public async Task TryPairAsync() {
       await _tPClient.SendAsync(new PairRequest() { Id = _options.CurrentValue.PluginId });
     }
-
-
 
     public void ProcessLine(ReadOnlySequence<byte> line) {
       if (line.Length == 0) {
@@ -94,18 +92,22 @@ namespace TouchPortalApi {
         //Handle Actions
         if (obj is TPAction) {
           var action = obj as TPAction;
-          _processQueueingService.ExecuteEventCallback(action.ActionId, action.Data);
+          OnActionEvent(action.ActionId, action.Data);
         }
 
         // Handle List Changes
         if (obj is TPListChange) {
           var change = obj as TPListChange;
-          _processQueueingService.ExecuteEventCallback(change.ActionId, change.Value);
+          OnListChangeEventHandler(change.ActionId, change.Value);
         }
       } catch (Exception err) {
         Console.WriteLine(err.Message);
       }
 
+    }
+
+    public void UpdateChoice(ChoiceUpdate choiceUpdate) {
+      _tPClient.SendAsync(choiceUpdate);
     }
   }
 }

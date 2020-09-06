@@ -37,20 +37,5 @@ namespace TouchPortalApi.Services {
     public void Stop() {
       _writer.Complete();
     }
-
-    public bool AddEvent<T>(string id, Action<T> callback) {
-      if (_events.ContainsKey(id)) {
-        return false;
-      }
-
-      _events.Add(id, callback);
-      return true;
-    }
-
-    public void ExecuteEventCallback<T>(string id, T data) {
-      if (_events.ContainsKey(id)) {
-        _events[id].DynamicInvoke(data);
-      }
-    }
   }
 }

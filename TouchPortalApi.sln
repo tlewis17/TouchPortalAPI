@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{7D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalApi.ConsoleApp", "Examples\TouchPortalApi.Console\TouchPortalApi.ConsoleApp.csproj", "{EEB32A35-1F35-4B70-9CBB-2CEEAF936080}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchPortalApi.WebApp", "Examples\TouchPortalApi.WebApp\TouchPortalApi.WebApp.csproj", "{49120D56-9EA0-452E-A359-DB8406B2A150}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalApi.WebApp", "Examples\TouchPortalApi.WebApp\TouchPortalApi.WebApp.csproj", "{49120D56-9EA0-452E-A359-DB8406B2A150}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{563F6D2B-393B-473D-82F7-EDD0B00E574C}"
 	ProjectSection(SolutionItems) = preProject
@@ -22,6 +22,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalApi.Service", "Examples\TouchPortalApi.Service\TouchPortalApi.Service.csproj", "{FC64FE1C-F476-4495-B256-4941E9BA922E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{CFC9BAD2-92C8-465E-9454-49BFFA2EE5AB}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build_publish_dotnet-core.yml = .github\workflows\build_publish_dotnet-core.yml
+		.github\workflows\dotnet-core.yml = .github\workflows\dotnet-core.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +63,7 @@ Global
 		{EEB32A35-1F35-4B70-9CBB-2CEEAF936080} = {7D813440-FE9E-4FB4-8A7E-EF90AD02CEB4}
 		{49120D56-9EA0-452E-A359-DB8406B2A150} = {7D813440-FE9E-4FB4-8A7E-EF90AD02CEB4}
 		{FC64FE1C-F476-4495-B256-4941E9BA922E} = {7D813440-FE9E-4FB4-8A7E-EF90AD02CEB4}
+		{CFC9BAD2-92C8-465E-9454-49BFFA2EE5AB} = {563F6D2B-393B-473D-82F7-EDD0B00E574C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2AE2CC22-3FBB-4E80-8BED-0E9A7120E033}

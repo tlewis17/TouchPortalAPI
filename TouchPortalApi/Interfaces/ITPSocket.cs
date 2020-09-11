@@ -10,8 +10,7 @@ namespace TouchPortalApi.Interfaces {
     void Connect(EndPoint remoteEP);
     void Dispose();
     void Disconnect(bool reuseSocket);
-    ValueTask<int> ReceiveAsync(Memory<byte> buffer, SocketFlags socketFlags, CancellationToken cancellationToken = default);
-    int Send(byte[] buffer, int size, SocketFlags socketFlags);
-    ValueTask<int> SendAsync(Memory<byte> buffer, SocketFlags socketFlags, CancellationToken cancellationToken = default);
+    ValueTask<int> ReceiveAsync(Memory<byte> buffer, CancellationToken cancellationToken = default);
+    ValueTask<int> SendAsync(Memory<byte> buffer, CancellationToken cancellationToken = default);
   }
 }

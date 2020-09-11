@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using TouchPortalApi.Interfaces;
+using TouchPortalApi.Models;
 
 namespace TouchPortalApi.WebApp {
   public class Startup {
@@ -35,11 +36,15 @@ namespace TouchPortalApi.WebApp {
 
       // Our services, can be retrieved through DI in constructors
       var messageProcessor = app.ApplicationServices.GetRequiredService<IMessageProcessor>();
-      var stateService = app.ApplicationServices.GetRequiredService<IStateService>();
+
+      // On Plugin Connect Event
+      messageProcessor.OnConnectEventHandler += () => {
+        Console.WriteLine($"{DateTime.Now} Plugin Connected to TouchPortal");
+      };
 
       // On Action Event
       messageProcessor.OnActionEvent += (actionId, dataList) => {
-        Console.WriteLine($"{DateTime.Now} DCS Action Event Fired.");
+        Console.WriteLine($"{DateTime.Now} Action Event Fired.");
         foreach (var o in dataList) {
           Console.WriteLine($"Id: {o.Id} Value: {o.Value}");
         }
@@ -49,6 +54,14 @@ namespace TouchPortalApi.WebApp {
       messageProcessor.OnListChangeEventHandler += (actionId, value) => {
         Console.WriteLine($"{DateTime.Now} Choice Event Fired.");
       };
+
+      // On Plugin Disconnect
+      messageProcessor.OnCloseEventHandler += () => {
+        Console.Write($"{DateTime.Now} Plugin Quit Command");
+      };
+
+      // Send State Update
+      messageProcessor.UpdateState(new StateUpdate() { Id = "SomeStateId", Value = "New Value" });
 
       // Listen/Pair on app startup
       lifetime.ApplicationStarted.Register(() => {

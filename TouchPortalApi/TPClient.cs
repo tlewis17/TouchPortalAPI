@@ -5,7 +5,6 @@ using System;
 using System.Buffers;
 using System.IO.Pipelines;
 using System.Net;
-using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -23,6 +22,13 @@ namespace TouchPortalApi {
     private readonly IProcessQueueingService _processQueueingService;
     private readonly CancellationToken _cancellationToken;
     
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="options">Configured TP Options</param>
+    /// <param name="socket">The TP Socket Object</param>
+    /// <param name="processQueueingService">THe Process Queue Service</param>
+    /// <param name="cancellationToken">Cancellation Token</param>
     public TPClient(IOptionsMonitor<TouchPortalApiOptions> options, ITPSocket socket, IProcessQueueingService processQueueingService,
       CancellationToken cancellationToken = new CancellationToken()) {
       _options = options ?? throw new ArgumentNullException(nameof(options));
@@ -38,19 +44,27 @@ namespace TouchPortalApi {
       InitializeConnection();
     }
 
+    /// <summary>
+    /// Initialize TP Socket if it isn't already.
+    /// </summary>
     private void InitializeConnection() {
       if (_tpsocket == null || !_tpsocket.Connected) {
         var ipe = new IPEndPoint(IPAddress.Parse(_options.CurrentValue.ServerIp), _options.CurrentValue.ServerPort);
-        _tpsocket = new TPSocket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        _tpsocket = new TPSocket(ipe.AddressFamily);
         _tpsocket.Connect(ipe);
       }
     }
 
+    /// <summary>
+    /// SendAsync Message to TP through Socket
+    /// </summary>
+    /// <param name="model">Object to send</param>
+    /// <param name="cancellationToken">The cancellation token</param>
     public async Task SendAsync(object model, CancellationToken cancellationToken = default) {
       string request = PrepareMessage(model);
       var bytesSent = Encoding.ASCII.GetBytes(request);
 
-      await _tpsocket.SendAsync(bytesSent, SocketFlags.None, cancellationToken);
+      await _tpsocket.SendAsync(bytesSent, cancellationToken);
     }
 
     internal string PrepareMessage(object model) {
@@ -65,21 +79,24 @@ namespace TouchPortalApi {
       await Task.WhenAll(reading, writing);
     }
 
-    public async Task FillPipeAsync(PipeWriter writer) {
+    /// <summary>
+    /// Fill the pipe with the result.
+    /// </summary>
+    /// <param name="writer">The pipe writer</param>
+    private async Task FillPipeAsync(PipeWriter writer) {
       const int minimumBufferSize = 512;
 
       while (true) {
         // Allocate at least 512 bytes from the PipeWriter.
         Memory<byte> memory = writer.GetMemory(minimumBufferSize);
         try {
-          int bytesRead = await _tpsocket.ReceiveAsync(memory, SocketFlags.None);
+          int bytesRead = await _tpsocket.ReceiveAsync(memory);
           if (bytesRead == 0) {
             break;
           }
           // Tell the PipeWriter how much was read from the Socket.
           writer.Advance(bytesRead);
-        } catch (Exception ex) {
-          //LogError(ex);
+        } catch {
           break;
         }
 
@@ -95,7 +112,11 @@ namespace TouchPortalApi {
       await writer.CompleteAsync();
     }
 
-    public async Task ReadPipeAsync(PipeReader reader) {
+    /// <summary>
+    /// Read the result from the pipe.
+    /// </summary>
+    /// <param name="reader">The pipe reader</param>
+    private async Task ReadPipeAsync(PipeReader reader) {
       while (true) {
         ReadResult result = await reader.ReadAsync();
         ReadOnlySequence<byte> buffer = result.Buffer;
@@ -103,8 +124,6 @@ namespace TouchPortalApi {
         while (TryReadLine(ref buffer, out ReadOnlySequence<byte> line)) {
           // Process the line.
           // Put in queue
-          //_messageProcessor.ProcessLine(line);
-          //_processQueueingService.AddToProcessQueue(line);
           _processQueueingService.Enqueue(line);
         }
 
@@ -121,7 +140,12 @@ namespace TouchPortalApi {
       await reader.CompleteAsync();
     }
 
-    public bool TryReadLine(ref ReadOnlySequence<byte> buffer, out ReadOnlySequence<byte> line) {
+    /// <summary>
+    /// Try to read a single line terminated with line return.
+    /// </summary>
+    /// <param name="buffer">The ReadOnlySequence buffer</param>
+    /// <param name="line">The output resulting sequence line</param>
+    private bool TryReadLine(ref ReadOnlySequence<byte> buffer, out ReadOnlySequence<byte> line) {
       // Look for a EOL in the buffer.
       SequencePosition? position = buffer.PositionOf((byte)'\n');
 

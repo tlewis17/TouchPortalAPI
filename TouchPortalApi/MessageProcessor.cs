@@ -20,6 +20,10 @@ namespace TouchPortalApi {
 
     public event ActionEventHandler OnActionEvent;
     public event ListChangeEventHandler OnListChangeEventHandler;
+    public event CloseEventHandler OnCloseEventHandler;
+    public event ConnectEventHandler OnConnectEventHandler;
+
+    public bool IsPaired = false;
 
     public MessageProcessor(IOptionsMonitor<TouchPortalApiOptions> options, ITPClient tPClient, IProcessQueueingService processQueueingService,
       CancellationToken cancellationToken = default) {
@@ -30,12 +34,6 @@ namespace TouchPortalApi {
     }
 
     public async Task Listen() {
-      //Task.Run(() => {
-      //  while (!_cancellationToken.IsCancellationRequested) {
-      //    ProcessLine(_processQueueingService.GetNextFromQueue());
-      //  }
-      //});
-
       _processQueueingService.SetupChannel(ProcessLine);
 
       while (!_cancellationToken.IsCancellationRequested) {
@@ -51,63 +49,76 @@ namespace TouchPortalApi {
       await _tPClient.SendAsync(new PairRequest() { Id = _options.CurrentValue.PluginId });
     }
 
-    public void ProcessLine(ReadOnlySequence<byte> line) {
+    private void ProcessLine(ReadOnlySequence<byte> line) {
       if (line.Length == 0) {
         return;
       }
 
       var result = line.ParseAsUTF8String();
 
-      object obj = null;
       try {
         var responseModel = JsonConvert.DeserializeObject<TPResponseBase>(result);
 
         switch (responseModel.Type.ToLower().Trim()) {
           case "info":
-            obj = JsonConvert.DeserializeObject<PairResponse>(result);
+            HandlePairEvent(JsonConvert.DeserializeObject<PairResponse>(result));
             break;
           case "action":
-            obj = JsonConvert.DeserializeObject<TPAction>(result);
+            HandleActionEvent(JsonConvert.DeserializeObject<TPAction>(result));
             break;
           case "listChange":
-            obj = JsonConvert.DeserializeObject<TPListChange>(result);
+            HandleListChangeEvent(JsonConvert.DeserializeObject<TPListChange>(result));
             break;
           case "closePlugin":
-            obj = JsonConvert.DeserializeObject<TPClosePlugin>(result);
+            HandleCloseEvent(JsonConvert.DeserializeObject<TPClosePlugin>(result));
             break;
-        }
-
-        if (obj == null) {
-          return;
-        }
-
-        //Handle Pair
-        if (obj is PairResponse) {
-          // Good pairing message returned
-          if (!string.IsNullOrEmpty((obj as PairResponse)?.PluginVersion)) {
-            //_IsPaired = true;
-          }
-        }
-
-        //Handle Actions
-        if (obj is TPAction) {
-          var action = obj as TPAction;
-          OnActionEvent(action.ActionId, action.Data);
-        }
-
-        // Handle List Changes
-        if (obj is TPListChange) {
-          var change = obj as TPListChange;
-          OnListChangeEventHandler(change.ActionId, change.Value);
         }
       } catch (Exception err) {
         Console.WriteLine(err.Message);
       }
-
     }
 
+    /// <summary>
+    /// Handle connect event
+    /// </summary>
+    /// <param name="response">The TP Pair Response</param>
+    private void HandlePairEvent(PairResponse response) {
+      // Good pairing message returned
+      if (!string.IsNullOrEmpty(response?.PluginVersion)) {
+        IsPaired = true;
+        OnConnectEventHandler();
+      }
+    }
+
+    /// <summary>
+    /// Handle an action event
+    /// </summary>
+    /// <param name="action">The action being triggered</param>
+    private void HandleActionEvent(TPAction action) {
+      OnActionEvent(action.ActionId, action.Data);
+    }
+
+    /// <summary>
+    /// Handle a list change event
+    /// </summary>
+    /// <param name="change">The list change event</param>
+    private void HandleListChangeEvent(TPListChange change) {
+      OnListChangeEventHandler(change.ActionId, change.Value);
+    }
+
+    /// <summary>
+    /// Handle a plugin close event
+    /// </summary>
+    /// <param name="closeEvent"></param>
+    private void HandleCloseEvent(TPClosePlugin closeEvent) {
+      OnCloseEventHandler();
+    }
     public void UpdateChoice(ChoiceUpdate choiceUpdate) {
       _tPClient.SendAsync(choiceUpdate);
+    }
+
+    public void UpdateState(StateUpdate stateUpdate) {
+      _tPClient.SendAsync(stateUpdate);
     }
   }
 }

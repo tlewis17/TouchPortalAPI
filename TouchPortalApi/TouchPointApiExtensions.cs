@@ -14,7 +14,6 @@ namespace TouchPortalApi {
       services.AddSingleton<ITPClient, TPClient>();
       services.AddSingleton<IProcessQueueingService, ProcessQueueingService>();
       services.AddSingleton<IMessageProcessor, MessageProcessor>();
-      services.AddSingleton<IStateService, StateService>();
 
       return services;
     }

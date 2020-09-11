@@ -1,11 +1,8 @@
 using Microsoft.Extensions.Options;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using TouchPortalApi.Configuration;
 using TouchPortalApi.Interfaces;
-using TouchPortalApi.Models.TouchPortal.Requests;
 using Xunit;
 
 namespace TouchPortalApi.Tests {
@@ -28,7 +25,7 @@ namespace TouchPortalApi.Tests {
       Mock<IOptionsSnapshot<TouchPortalApiOptions>> optionsMock = new Mock<IOptionsSnapshot<TouchPortalApiOptions>>();
 
       socketMock.Setup(x => x.Connected).Returns(true);
-      socketMock.Setup((x) => x.Send(Capture.In<byte[]>(testData), It.IsAny<int>(), It.IsAny<SocketFlags>()));
+      //socketMock.Setup((x) => x.Send(Capture.In<byte[]>(testData), It.IsAny<int>(), It.IsAny<SocketFlags>()));
 
       // act
 

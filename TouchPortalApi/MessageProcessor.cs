@@ -66,15 +66,15 @@ namespace TouchPortalApi {
           case "action":
             HandleActionEvent(JsonConvert.DeserializeObject<TPAction>(result));
             break;
-          case "listChange":
+          case "listchange":
             HandleListChangeEvent(JsonConvert.DeserializeObject<TPListChange>(result));
             break;
-          case "closePlugin":
+          case "closeplugin":
             HandleCloseEvent(JsonConvert.DeserializeObject<TPClosePlugin>(result));
             break;
         }
       } catch (Exception err) {
-        Console.WriteLine(err.Message);
+        Console.WriteLine($"Exception - {err.Message}");
       }
     }
 
@@ -86,7 +86,8 @@ namespace TouchPortalApi {
       // Good pairing message returned
       if (!string.IsNullOrEmpty(response?.PluginVersion)) {
         IsPaired = true;
-        OnConnectEventHandler();
+
+        OnConnectEventHandler?.Invoke();
       }
     }
 
@@ -95,7 +96,7 @@ namespace TouchPortalApi {
     /// </summary>
     /// <param name="action">The action being triggered</param>
     private void HandleActionEvent(TPAction action) {
-      OnActionEvent(action.ActionId, action.Data);
+      OnActionEvent?.Invoke(action.ActionId, action.Data);
     }
 
     /// <summary>
@@ -103,7 +104,7 @@ namespace TouchPortalApi {
     /// </summary>
     /// <param name="change">The list change event</param>
     private void HandleListChangeEvent(TPListChange change) {
-      OnListChangeEventHandler(change.ActionId, change.Value);
+      OnListChangeEventHandler?.Invoke(change.ActionId, change.Value);
     }
 
     /// <summary>
@@ -111,7 +112,7 @@ namespace TouchPortalApi {
     /// </summary>
     /// <param name="closeEvent"></param>
     private void HandleCloseEvent(TPClosePlugin closeEvent) {
-      OnCloseEventHandler();
+      OnCloseEventHandler?.Invoke();
     }
     public void UpdateChoice(ChoiceUpdate choiceUpdate) {
       _tPClient.SendAsync(choiceUpdate);

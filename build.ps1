@@ -31,11 +31,11 @@ if (Test-Path $DistFolderPath) {
 }
 
 Write-Host "Publishing 'TouchPortalApi' component...`n" -foregroundcolor "Magenta"
-dotnet pack "TouchPortalApi" --output $DistFolderPath --configuration $Configuration --include-symbols $VersionSuffixCommand $VersionSuffix
+dotnet pack "TouchPortalApi" --output $DistFolderPath --configuration $Configuration $VersionSuffixCommand $VersionSuffix --include-symbols -p:SymbolPackageFormat=snupkg
 
 if ($IsBuildAgent) {
   exit 0
 }
 
 Write-Host "Publishing 'TouchPortalApi' component to local NuGet source...`n" -foregroundcolor "Magenta"
-dotnet nuget push packages-dist\* --source LocalDev
+dotnet nuget push packages-dist\*.nupkg --source LocalDev

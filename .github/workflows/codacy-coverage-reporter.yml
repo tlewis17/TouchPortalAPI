@@ -1,6 +1,7 @@
 name: codacy-coverage-reporter
-
-on: ["push"]
+on:
+  workflow_dispatch:
+    branches: [ master ]
 
 jobs:
   codacy-coverage-reporter:

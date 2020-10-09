@@ -1,6 +1,10 @@
 # TouchPortalApi
 
 ![.NET Core](https://github.com/tlewis17/TouchPortalAPI/workflows/.NET%20Core/badge.svg?branch=master)
+[![NuGet](https://img.shields.io/nuget/v/TouchPortalApi)](https://www.nuget.org/packages/TouchPortalApi/)
+[![Downloads](https://img.shields.io/nuget/dt/TouchPortalApi)](https://www.nuget.org/packages/TouchPortalApi/)
+[![Stars](https://img.shields.io/github/stars/tlewis17/TouchPortalAPI)](https://github.com/tlewis17/TouchPortalAPI/stargazers)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
 SDK to interface with Touch Portal API through sockets.
 Sample projects include WebApp, Console, and Worker Services.

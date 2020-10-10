@@ -22,4 +22,48 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage"
+
+    - name: Codacy Analysis CLI
+      # You may pin to the exact commit or the version.
+      # uses: codacy/codacy-analysis-cli-action@50df40eed1c307c04aba7bab63f65bfc690891c9
+      uses: codacy/codacy-analysis-cli-action@1.0.1
+      with:
+        # Run with verbose output
+        verbose: # optional
+        # API token to retrieve your remote Codacy configuration for the project being analyzed
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        # Codacy's API URL, to retrieve your remote Codacy configuration
+        codacy-api-base-url: # optional
+        # Format of the output file
+        format: # optional
+        # Send analysis results to an output file
+        output: # optional
+        # The directory to be analyzed
+        directory: # optional
+        # Number of tools to run in parallel
+        parallel: # optional
+        # Maximum number of issues allowed for the analysis to succeed
+        max-allowed-issues: # optional
+        # The name of the tool to analyze the code
+        tool: # optional
+        # Maximum time each tool has to execute
+        tool-timeout: # optional
+        # Upload analysis results to Codacy
+        upload: # optional
+        # Fail the analysis if any tool fails to run
+        fail-if-incomplete: # optional
+        # Allow network access for tools
+        allow-network: # optional
+        # Force files to be readable by changing the permissions before running the analysis
+        force-file-permissions: # optional
+
+    - name: Codacy Coverage Reporter
+      # You may pin to the exact commit or the version.
+      # uses: codacy/codacy-coverage-reporter-action@53ebfe140c89720a8234b8ea4fabaf6de5736092
+      uses: codacy/codacy-coverage-reporter-action@0.2.0
+      with:
+        # Project token for the Codacy project you want to send coverage information
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        # Optional comma separated list of coverage reports to send to Codacy
+        coverage-reports: # optional, default is 

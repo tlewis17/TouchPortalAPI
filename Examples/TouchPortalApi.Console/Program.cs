@@ -21,6 +21,7 @@ namespace TouchPortalApi.ConsoleApp {
       // On Plugin Connect Event
       messageProcessor.OnConnectEventHandler += () => {
         Console.WriteLine($"{DateTime.Now} Plugin Connected to TouchPortal");
+        messageProcessor.CreateState(new CreateState() { Id = "CreatedStateId", Desc = "State Description", DefaultValue = "default value" });
       };
 
       // On Action Event
@@ -39,6 +40,7 @@ namespace TouchPortalApi.ConsoleApp {
       // On Plugin Disconnect
       messageProcessor.OnCloseEventHandler += () => {
         Console.Write($"{DateTime.Now} Plugin Quit Command");
+        messageProcessor.RemoveState(new RemoveState() { Id = "CreatedStateId" });
       };
 
       // Send State Update

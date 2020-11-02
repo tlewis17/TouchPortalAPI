@@ -117,7 +117,14 @@ namespace TouchPortalApi {
     public void UpdateChoice(ChoiceUpdate choiceUpdate) {
       _tPClient.SendAsync(choiceUpdate);
     }
-
+    public void CreateState(CreateState createState)
+    {
+      _tPClient.SendAsync(createState);
+    }
+    public void RemoveState(RemoveState removeState)
+    {
+      _tPClient.SendAsync(removeState);
+    }
     public void UpdateState(StateUpdate stateUpdate) {
       _tPClient.SendAsync(stateUpdate);
     }

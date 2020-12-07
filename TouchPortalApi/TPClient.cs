@@ -16,7 +16,7 @@ using TouchPortalApi.Wrappers;
 [assembly: InternalsVisibleTo("TouchPortalApi.Tests")]
 
 namespace TouchPortalApi {
-  public class TPClient : ITPClient {
+  public class TPClient : ITPClient, IDisposable {
     private readonly IOptionsMonitor<TouchPortalApiOptions> _options;
     private ITPSocket _tpsocket;
     private readonly IProcessQueueingService _processQueueingService;

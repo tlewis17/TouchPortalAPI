@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 using System.Threading.Tasks;
 using TouchPortalApi.Interfaces;
 using TouchPortalApi.Models;
@@ -39,26 +38,21 @@ namespace TouchPortalApi.WebApp {
 
       // On Plugin Connect Event
       messageProcessor.OnConnectEventHandler += () => {
-        Console.WriteLine($"{DateTime.Now} Plugin Connected to TouchPortal");
         messageProcessor.CreateState(new CreateState() { Id = "CreatedStateId", Desc = "State Description", DefaultValue = "default value" });
       };
 
       // On Action Event
       messageProcessor.OnActionEvent += (actionId, dataList) => {
-        Console.WriteLine($"{DateTime.Now} Action Event Fired.");
         foreach (var o in dataList) {
-          Console.WriteLine($"Id: {o.Id} Value: {o.Value}");
         }
       };
 
       // On List Change Event
       messageProcessor.OnListChangeEventHandler += (actionId, value) => {
-        Console.WriteLine($"{DateTime.Now} Choice Event Fired.");
       };
 
       // On Plugin Disconnect
       messageProcessor.OnCloseEventHandler += () => {
-        Console.Write($"{DateTime.Now} Plugin Quit Command");
         messageProcessor.RemoveState(new RemoveState() { Id = "CreatedStateId" });
       };
 

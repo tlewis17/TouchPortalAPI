@@ -19,26 +19,26 @@ namespace TouchPortalApi.Service {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
       // On Plugin Connect Event
       _messageProcessor.OnConnectEventHandler += () => {
-        Console.WriteLine($"{DateTime.Now} Plugin Connected to TouchPortal");
+        _logger.LogInformation($"{DateTime.Now} Plugin Connected to TouchPortal");
         _messageProcessor.CreateState(new CreateState() { Id = "CreatedStateId", Desc = "State Description", DefaultValue = "default value" });
       };
 
       // On Action Event
       _messageProcessor.OnActionEvent += (actionId, dataList) => {
-        Console.WriteLine($"{DateTime.Now} Action Event Fired.");
+        _logger.LogInformation($"{DateTime.Now} Action Event Fired.");
         foreach (var o in dataList) {
-          Console.WriteLine($"Id: {o.Id} Value: {o.Value}");
+          _logger.LogInformation($"Id: {o.Id} Value: {o.Value}");
         }
       };
 
       // On List Change Event
       _messageProcessor.OnListChangeEventHandler += (actionId, value) => {
-        Console.WriteLine($"{DateTime.Now} Choice Event Fired.");
+        _logger.LogInformation($"{DateTime.Now} Choice Event Fired.");
       };
 
       // On Plugin Disconnect
       _messageProcessor.OnCloseEventHandler += () => {
-        Console.Write($"{DateTime.Now} Plugin Quit Command");
+        _logger.LogInformation($"{DateTime.Now} Plugin Quit Command");
         _messageProcessor.RemoveState(new RemoveState() { Id = "CreatedStateId" });
       };
 

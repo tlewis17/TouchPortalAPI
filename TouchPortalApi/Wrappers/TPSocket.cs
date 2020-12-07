@@ -10,7 +10,7 @@ namespace TouchPortalApi.Wrappers {
   /// Socket Wrapper
   /// </summary>
   public class TPSocket : ITPSocket {
-    private Socket _socket;
+    private readonly Socket _socket;
 
     // Default Constructor for dependency injection
     public TPSocket() {}

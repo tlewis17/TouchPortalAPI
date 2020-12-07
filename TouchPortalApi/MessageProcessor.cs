@@ -72,7 +72,7 @@ namespace TouchPortalApi {
     /// </summary>
     /// <returns></returns>
     public async Task TryPairAsync() {
-      await _tPClient.SendAsync(new PairRequest() { Id = _options.CurrentValue.PluginId });
+      await _tPClient.SendAsync(new PairRequest { Id = _options.CurrentValue.PluginId });
     }
 
     /// <summary>
@@ -156,16 +156,16 @@ namespace TouchPortalApi {
     /// Creates a new state
     /// </summary>
     /// <param name="createState"></param>
-    public void CreateState(CreateState createState) {
-      _tPClient.SendAsync(createState);
+    public void CreateState(CreateState stateToCreate) {
+      _tPClient.SendAsync(stateToCreate);
     }
 
     /// <summary>
     /// Removes a state
     /// </summary>
     /// <param name="removeState"></param>
-    public void RemoveState(RemoveState removeState) {
-      _tPClient.SendAsync(removeState);
+    public void RemoveState(RemoveState stateToRemove) {
+      _tPClient.SendAsync(stateToRemove);
     }
 
     /// <summary>

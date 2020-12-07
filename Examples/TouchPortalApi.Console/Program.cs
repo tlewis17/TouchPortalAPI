@@ -20,7 +20,6 @@ namespace TouchPortalApi.ConsoleApp {
 
       // On Plugin Connect Event
       messageProcessor.OnConnectEventHandler += () => {
-        Console.WriteLine($"{DateTime.Now} Plugin Connected to TouchPortal");
         messageProcessor.CreateState(new CreateState() { Id = "CreatedStateId", Desc = "State Description", DefaultValue = "default value" });
       };
 

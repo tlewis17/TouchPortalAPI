@@ -13,18 +13,36 @@ using TouchPortalApi.Models.TouchPortal.Responses;
 
 namespace TouchPortalApi {
   public class MessageProcessor : IMessageProcessor {
+    #region private vars
+
     private readonly IOptionsMonitor<TouchPortalApiOptions> _options;
     private readonly ITPClient _tPClient;
     private readonly IProcessQueueingService _processQueueingService;
     private readonly CancellationToken _cancellationToken;
+
+    #endregion
+
+    #region Event Handlers
 
     public event ActionEventHandler OnActionEvent;
     public event ListChangeEventHandler OnListChangeEventHandler;
     public event CloseEventHandler OnCloseEventHandler;
     public event ConnectEventHandler OnConnectEventHandler;
 
+    #endregion
+
+    /// <summary>
+    /// If the TP Client is paired already or not.
+    /// </summary>
     public bool IsPaired = false;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="options"></param>
+    /// <param name="tPClient"></param>
+    /// <param name="processQueueingService"></param>
+    /// <param name="cancellationToken"></param>
     public MessageProcessor(IOptionsMonitor<TouchPortalApiOptions> options, ITPClient tPClient, IProcessQueueingService processQueueingService,
       CancellationToken cancellationToken = default) {
       _options = options ?? throw new ArgumentNullException(nameof(options));
@@ -33,6 +51,10 @@ namespace TouchPortalApi {
       _cancellationToken = cancellationToken;
     }
 
+    /// <summary>
+    /// Listens for new messages from Touch Portal
+    /// </summary>
+    /// <returns></returns>
     public async Task Listen() {
       _processQueueingService.SetupChannel(ProcessLine);
 
@@ -45,10 +67,18 @@ namespace TouchPortalApi {
       }
     }
 
+    /// <summary>
+    /// Tries to connect to Touch Portal
+    /// </summary>
+    /// <returns></returns>
     public async Task TryPairAsync() {
       await _tPClient.SendAsync(new PairRequest() { Id = _options.CurrentValue.PluginId });
     }
 
+    /// <summary>
+    /// Process an incoming message
+    /// </summary>
+    /// <param name="line">Incoming <see cref="ReadOnlySequence{byte}"/></param>
     private void ProcessLine(ReadOnlySequence<byte> line) {
       if (line.Length == 0) {
         return;
@@ -70,7 +100,7 @@ namespace TouchPortalApi {
             HandleListChangeEvent(JsonConvert.DeserializeObject<TPListChange>(result));
             break;
           case "closeplugin":
-            HandleCloseEvent(JsonConvert.DeserializeObject<TPClosePlugin>(result));
+            HandleCloseEvent();
             break;
         }
       } catch (Exception err) {
@@ -110,21 +140,38 @@ namespace TouchPortalApi {
     /// <summary>
     /// Handle a plugin close event
     /// </summary>
-    /// <param name="closeEvent"></param>
-    private void HandleCloseEvent(TPClosePlugin closeEvent) {
+    private void HandleCloseEvent() {
       OnCloseEventHandler?.Invoke();
     }
+
+    /// <summary>
+    /// Updates a choice
+    /// </summary>
+    /// <param name="choiceUpdate"></param>
     public void UpdateChoice(ChoiceUpdate choiceUpdate) {
       _tPClient.SendAsync(choiceUpdate);
     }
-    public void CreateState(CreateState createState)
-    {
+
+    /// <summary>
+    /// Creates a new state
+    /// </summary>
+    /// <param name="createState"></param>
+    public void CreateState(CreateState createState) {
       _tPClient.SendAsync(createState);
     }
-    public void RemoveState(RemoveState removeState)
-    {
+
+    /// <summary>
+    /// Removes a state
+    /// </summary>
+    /// <param name="removeState"></param>
+    public void RemoveState(RemoveState removeState) {
       _tPClient.SendAsync(removeState);
     }
+
+    /// <summary>
+    /// Updates the value of a state
+    /// </summary>
+    /// <param name="stateUpdate"></param>
     public void UpdateState(StateUpdate stateUpdate) {
       _tPClient.SendAsync(stateUpdate);
     }

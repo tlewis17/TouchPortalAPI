@@ -16,11 +16,10 @@ using TouchPortalApi.Wrappers;
 [assembly: InternalsVisibleTo("TouchPortalApi.Tests")]
 
 namespace TouchPortalApi {
-  public class TPClient : ITPClient, IDisposable {
+  public class TPClient : ITPClient {
     private readonly IOptionsMonitor<TouchPortalApiOptions> _options;
     private ITPSocket _tpsocket;
     private readonly IProcessQueueingService _processQueueingService;
-    private readonly CancellationToken _cancellationToken;
     
     /// <summary>
     /// Constructor
@@ -29,12 +28,10 @@ namespace TouchPortalApi {
     /// <param name="socket">The TP Socket Object</param>
     /// <param name="processQueueingService">THe Process Queue Service</param>
     /// <param name="cancellationToken">Cancellation Token</param>
-    public TPClient(IOptionsMonitor<TouchPortalApiOptions> options, ITPSocket socket, IProcessQueueingService processQueueingService,
-      CancellationToken cancellationToken = new CancellationToken()) {
+    public TPClient(IOptionsMonitor<TouchPortalApiOptions> options, ITPSocket socket, IProcessQueueingService processQueueingService) {
       _options = options ?? throw new ArgumentNullException(nameof(options));
       _tpsocket = socket ?? throw new ArgumentNullException(nameof(socket));
       _processQueueingService = processQueueingService ?? throw new ArgumentNullException(nameof(processQueueingService));
-      _cancellationToken = cancellationToken;
 
       // Add this somewhere in your project, most likely in Startup.cs
       JsonConvert.DefaultSettings = () => new JsonSerializerSettings {
@@ -160,9 +157,20 @@ namespace TouchPortalApi {
       return true;
     }
 
-    // Dispose of Socket
+    /// <summary>
+    /// Dispose of Socket 
+    /// </summary>
     public void Dispose() {
-      if (_tpsocket != null) {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Cleanup resources
+    /// </summary>
+    /// <param name="disposing"></param>
+    protected virtual void Dispose(bool disposing) {
+      if (disposing && _tpsocket != null) {
         if (_tpsocket.Connected) {
           _tpsocket.Disconnect(false);
         }

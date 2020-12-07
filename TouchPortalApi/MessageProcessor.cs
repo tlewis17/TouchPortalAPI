@@ -34,7 +34,7 @@ namespace TouchPortalApi {
     /// <summary>
     /// If the TP Client is paired already or not.
     /// </summary>
-    public bool IsPaired = false;
+    public bool IsPaired { get; set; } = false;
 
     /// <summary>
     /// Constructor
@@ -156,16 +156,16 @@ namespace TouchPortalApi {
     /// Creates a new state
     /// </summary>
     /// <param name="createState"></param>
-    public void CreateState(CreateState stateToCreate) {
-      _tPClient.SendAsync(stateToCreate);
+    public void CreateState(CreateState createState) {
+      _tPClient.SendAsync(createState);
     }
 
     /// <summary>
     /// Removes a state
     /// </summary>
     /// <param name="removeState"></param>
-    public void RemoveState(RemoveState stateToRemove) {
-      _tPClient.SendAsync(stateToRemove);
+    public void RemoveState(RemoveState removeState) {
+      _tPClient.SendAsync(removeState);
     }
 
     /// <summary>

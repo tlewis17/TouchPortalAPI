@@ -1,7 +1,5 @@
-using Microsoft.Extensions.Options;
 using Moq;
 using System.Collections.Generic;
-using TouchPortalApi.Configuration;
 using TouchPortalApi.Interfaces;
 using Xunit;
 
@@ -13,9 +11,10 @@ namespace TouchPortalApi.Tests {
       List<byte[]> testData = new List<byte[]>();
       Mock<ITPSocket> socketMock = new Mock<ITPSocket>();
       socketMock.Setup(s => s.Connected).Returns(true);
-      Mock<IOptionsSnapshot<TouchPortalApiOptions>> optionsMock = new Mock<IOptionsSnapshot<TouchPortalApiOptions>>();
 
       socketMock.Setup(x => x.Connected).Returns(true);
+
+      Assert.NotNull(testData);
     }
   }
 }

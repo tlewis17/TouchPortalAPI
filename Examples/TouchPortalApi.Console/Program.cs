@@ -5,8 +5,8 @@ using TouchPortalApi.Interfaces;
 using TouchPortalApi.Models;
 
 namespace TouchPortalApi.ConsoleApp {
-  class Program {
-    static void Main(string[] args) {
+  public static class Program {
+    public static void Main(string[] args) {
       // Setup DI with configured options
       var serviceProvider = new ServiceCollection()
         .ConfigureTouchPointApi((opts) => {

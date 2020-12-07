@@ -41,10 +41,8 @@ namespace TouchPortalApi.WebApp {
         messageProcessor.CreateState(new CreateState() { Id = "CreatedStateId", Desc = "State Description", DefaultValue = "default value" });
       };
 
-      // On Action Event
+      // On Action Event - Foreach event in dataList
       messageProcessor.OnActionEvent += (actionId, dataList) => {
-        foreach (var o in dataList) {
-        }
       };
 
       // On List Change Event

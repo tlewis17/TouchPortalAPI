@@ -1,7 +1,7 @@
 ﻿namespace TouchPortalApi.Models {
-  public class RemoveState
+  public class StateRemove
     {
-        public readonly string Type = "removeState";
+        public const string Type = "removeState";
         public string Id { get; set; }
     }
 }

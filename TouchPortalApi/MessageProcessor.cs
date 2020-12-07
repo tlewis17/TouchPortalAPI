@@ -156,16 +156,16 @@ namespace TouchPortalApi {
     /// Creates a new state
     /// </summary>
     /// <param name="createState"></param>
-    public void CreateState(CreateState createState) {
-      _tPClient.SendAsync(createState);
+    public void CreateState(StateCreate stateCreate) {
+      _tPClient.SendAsync(stateCreate);
     }
 
     /// <summary>
     /// Removes a state
     /// </summary>
     /// <param name="removeState"></param>
-    public void RemoveState(RemoveState removeState) {
-      _tPClient.SendAsync(removeState);
+    public void RemoveState(StateRemove stateRemove) {
+      _tPClient.SendAsync(stateRemove);
     }
 
     /// <summary>

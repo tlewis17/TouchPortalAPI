@@ -16,6 +16,9 @@ using TouchPortalApi.Wrappers;
 [assembly: InternalsVisibleTo("TouchPortalApi.Tests")]
 
 namespace TouchPortalApi {
+  /// <summary>
+  /// The Touch Portal Client Class
+  /// </summary>
   public class TPClient : ITPClient {
     private readonly IOptionsMonitor<TouchPortalApiOptions> _options;
     private ITPSocket _tpsocket;
@@ -64,16 +67,24 @@ namespace TouchPortalApi {
       await _tpsocket.SendAsync(bytesSent, cancellationToken);
     }
 
+    /// <summary>
+    /// Serialzies the object
+    /// </summary>
+    /// <param name="model">The object to serialize</param>
+    /// <returns>A string representation of the object</returns>
     internal string PrepareMessage(object model) {
       return $"{JsonConvert.SerializeObject(model)}\n";
     }
 
+    /// <summary>
+    /// Process the read and write pipes
+    /// </summary>
     public async Task ProcessPipes() {
       var pipe = new Pipe();
       Task writing = FillPipeAsync(pipe.Writer);
       Task reading = ReadPipeAsync(pipe.Reader);
 
-      await Task.WhenAll(reading, writing);
+      await Task.WhenAll(reading, writing).ConfigureAwait(false);
     }
 
     /// <summary>

@@ -8,8 +8,6 @@ namespace TouchPortalApi.Services {
   internal class ProcessQueueingService : IProcessQueueingService {
     private ChannelWriter<ReadOnlySequence<byte>> _writer;
 
-    public ProcessQueueingService() { }
-
     public void SetupChannel(Action<ReadOnlySequence<byte>> callback) {
       var channel = Channel.CreateUnbounded<ReadOnlySequence<byte>>(new UnboundedChannelOptions() { SingleReader = true });
       var reader = channel.Reader;

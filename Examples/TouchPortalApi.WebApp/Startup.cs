@@ -38,7 +38,7 @@ namespace TouchPortalApi.WebApp {
 
       // On Plugin Connect Event
       messageProcessor.OnConnectEventHandler += () => {
-        messageProcessor.CreateState(new CreateState() { Id = "CreatedStateId", Desc = "State Description", DefaultValue = "default value" });
+        messageProcessor.CreateState(new StateCreate() { Id = "CreatedStateId", Desc = "State Description", DefaultValue = "default value" });
       };
 
       // On Action Event - Foreach event in dataList
@@ -51,7 +51,7 @@ namespace TouchPortalApi.WebApp {
 
       // On Plugin Disconnect
       messageProcessor.OnCloseEventHandler += () => {
-        messageProcessor.RemoveState(new RemoveState() { Id = "CreatedStateId" });
+        messageProcessor.RemoveState(new StateRemove() { Id = "CreatedStateId" });
       };
 
       // Send State Update

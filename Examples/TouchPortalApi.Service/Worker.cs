@@ -20,7 +20,7 @@ namespace TouchPortalApi.Service {
       // On Plugin Connect Event
       _messageProcessor.OnConnectEventHandler += () => {
         _logger.LogInformation($"{DateTime.Now} Plugin Connected to TouchPortal");
-        _messageProcessor.CreateState(new CreateState() { Id = "CreatedStateId", Desc = "State Description", DefaultValue = "default value" });
+        _messageProcessor.CreateState(new StateCreate { Id = "CreatedStateId", Desc = "State Description", DefaultValue = "default value" });
       };
 
       // On Action Event
@@ -39,11 +39,11 @@ namespace TouchPortalApi.Service {
       // On Plugin Disconnect
       _messageProcessor.OnCloseEventHandler += () => {
         _logger.LogInformation($"{DateTime.Now} Plugin Quit Command");
-        _messageProcessor.RemoveState(new RemoveState() { Id = "CreatedStateId" });
+        _messageProcessor.RemoveState(new StateRemove { Id = "CreatedStateId" });
       };
 
       // Send State Update
-      _messageProcessor.UpdateState(new StateUpdate() { Id = "SomeStateId", Value = "New Value" });
+      _messageProcessor.UpdateState(new StateUpdate { Id = "SomeStateId", Value = "New Value" });
 
       // Run Listen and pairing
       _ = Task.WhenAll(new Task[] {
@@ -54,7 +54,7 @@ namespace TouchPortalApi.Service {
       // Do whatever you want in here
       while (!stoppingToken.IsCancellationRequested) {
         _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-        await Task.Delay(1000, stoppingToken);
+        await Task.Delay(1000, stoppingToken).ConfigureAwait(false);
       }
     }
   }

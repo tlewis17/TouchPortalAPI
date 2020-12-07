@@ -1,7 +1,7 @@
 ﻿namespace TouchPortalApi.Models {
-  public class CreateState
+  public class StateCreate
     {
-        public readonly string Type = "createState";
+        public const string Type = "createState";
         public string Id { get; set; }
         public string Desc { get; set; }
         public string DefaultValue { get; set; }

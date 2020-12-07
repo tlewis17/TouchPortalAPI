@@ -25,20 +25,14 @@ namespace TouchPortalApi.ConsoleApp {
 
       // On Action Event
       messageProcessor.OnActionEvent += (actionId, dataList) => {
-        Console.WriteLine($"{DateTime.Now} Action Event Fired.");
-        foreach (var o in dataList) {
-          Console.WriteLine($"Id: {o.Id} Value: {o.Value}");
-        }
       };
 
       // On List Change Event
       messageProcessor.OnListChangeEventHandler += (actionId, value) => {
-        Console.WriteLine($"{DateTime.Now} Choice Event Fired.");
       };
 
       // On Plugin Disconnect
       messageProcessor.OnCloseEventHandler += () => {
-        Console.Write($"{DateTime.Now} Plugin Quit Command");
         messageProcessor.RemoveState(new StateRemove { Id = "CreatedStateId" });
       };
 

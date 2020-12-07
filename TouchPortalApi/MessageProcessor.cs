@@ -34,7 +34,7 @@ namespace TouchPortalApi {
     /// <summary>
     /// If the TP Client is paired already or not.
     /// </summary>
-    public bool IsPaired { get; set; } = false;
+    public bool IsPaired { get; set; };
 
     /// <summary>
     /// Constructor
@@ -101,6 +101,9 @@ namespace TouchPortalApi {
             break;
           case "closeplugin":
             HandleCloseEvent();
+            break;
+          default:
+            Console.WriteLine($"No operation defined for: {responseModel.Type.ToLower().Trim()}");
             break;
         }
       } catch (Exception err) {

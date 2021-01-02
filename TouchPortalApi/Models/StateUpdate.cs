@@ -1,7 +1,15 @@
-﻿namespace TouchPortalApi.Models {
-  public class StateUpdate {
-    public static readonly string Type = "stateUpdate";
-    public string Id { get; set; }
-    public string Value { get; set; }
-  }
+﻿using Newtonsoft.Json;
+
+namespace TouchPortalApi.Models
+{
+    [JsonObject(MemberSerialization.OptIn)]
+    public class StateUpdate
+    {
+        [JsonProperty]
+        public static readonly string Type = "stateUpdate";
+        [JsonProperty]
+        public string Id { get; set; }
+        [JsonProperty]
+        public string Value { get; set; }
+    }
 }

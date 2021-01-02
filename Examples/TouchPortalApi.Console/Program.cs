@@ -28,7 +28,7 @@ namespace TouchPortalApi.ConsoleApp {
       };
 
       // On List Change Event
-      messageProcessor.OnListChangeEventHandler += (actionId, value) => {
+      messageProcessor.OnListChangeEventHandler += (actionId, listId, instanceId, value) => {
       };
 
       // On Plugin Disconnect

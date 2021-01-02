@@ -137,7 +137,7 @@ namespace TouchPortalApi {
     /// </summary>
     /// <param name="change">The list change event</param>
     private void HandleListChangeEvent(TPListChange change) {
-      OnListChangeEventHandler?.Invoke(change.ActionId, change.Value);
+      OnListChangeEventHandler?.Invoke(change.ActionId, change.ListId, change.InstanceId, change.Value);
     }
 
     /// <summary>

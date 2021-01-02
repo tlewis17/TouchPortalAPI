@@ -32,7 +32,7 @@ namespace TouchPortalApi.Service {
       };
 
       // On List Change Event
-      _messageProcessor.OnListChangeEventHandler += (actionId, value) => {
+      _messageProcessor.OnListChangeEventHandler += (actionId, listId, instanceId, value) => {
         _logger.LogInformation($"{DateTime.Now} Choice Event Fired.");
       };
 

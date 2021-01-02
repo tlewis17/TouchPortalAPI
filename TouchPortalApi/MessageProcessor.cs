@@ -34,7 +34,7 @@ namespace TouchPortalApi {
     /// <summary>
     /// If the TP Client is paired already or not.
     /// </summary>
-    public bool IsPaired { get; set; };
+    public bool IsPaired { get; set; }
 
     /// <summary>
     /// Constructor

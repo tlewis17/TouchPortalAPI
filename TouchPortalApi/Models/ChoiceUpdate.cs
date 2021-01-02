@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace TouchPortalApi.Models {
   public class ChoiceUpdate {
-    public readonly string Type = "choiceUpdate";
+    public static readonly string Type = "choiceUpdate";
     public string Id { get; set; }
     [DefaultValue("")]
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]

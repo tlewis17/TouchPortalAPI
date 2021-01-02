@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Buffers;
-using System.Collections.Generic;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using TouchPortalApi.Interfaces;
 
 namespace TouchPortalApi.Services {
   internal class ProcessQueueingService : IProcessQueueingService {
-    private Dictionary<string, Delegate> _events = new Dictionary<string, Delegate>();
     private ChannelWriter<ReadOnlySequence<byte>> _writer;
-
-    public ProcessQueueingService() { }
 
     public void SetupChannel(Action<ReadOnlySequence<byte>> callback) {
       var channel = Channel.CreateUnbounded<ReadOnlySequence<byte>>(new UnboundedChannelOptions() { SingleReader = true });

@@ -17,6 +17,8 @@ namespace TouchPortalApi.Interfaces {
     Task Listen();
     Task TryPairAsync();
     void UpdateChoice(ChoiceUpdate choiceUpdate);
+    void CreateState(StateCreate stateCreate);
+    void RemoveState(StateRemove stateRemove);
     void UpdateState(StateUpdate stateUpdate);
-  }
+    }
 }

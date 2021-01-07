@@ -4,7 +4,7 @@ using TouchPortalApi.Models;
 
 namespace TouchPortalApi.Interfaces {
   public delegate void ActionEventHandler(string actionId, List<ActionData> dataList);
-  public delegate void ListChangeEventHandler(string actionId, string value);
+  public delegate void ListChangeEventHandler(string actionId, string listId, string instanceId, string value);
   public delegate void CloseEventHandler();
   public delegate void ConnectEventHandler();
 
@@ -17,6 +17,8 @@ namespace TouchPortalApi.Interfaces {
     Task Listen();
     Task TryPairAsync();
     void UpdateChoice(ChoiceUpdate choiceUpdate);
+    void CreateState(StateCreate stateCreate);
+    void RemoveState(StateRemove stateRemove);
     void UpdateState(StateUpdate stateUpdate);
-  }
+    }
 }

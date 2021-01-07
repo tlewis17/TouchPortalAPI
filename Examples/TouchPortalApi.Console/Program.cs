@@ -5,8 +5,8 @@ using TouchPortalApi.Interfaces;
 using TouchPortalApi.Models;
 
 namespace TouchPortalApi.ConsoleApp {
-  class Program {
-    static void Main(string[] args) {
+  public static class Program {
+    public static void Main(string[] args) {
       // Setup DI with configured options
       var serviceProvider = new ServiceCollection()
         .ConfigureTouchPointApi((opts) => {
@@ -20,29 +20,24 @@ namespace TouchPortalApi.ConsoleApp {
 
       // On Plugin Connect Event
       messageProcessor.OnConnectEventHandler += () => {
-        Console.WriteLine($"{DateTime.Now} Plugin Connected to TouchPortal");
+        messageProcessor.CreateState(new StateCreate() { Id = "CreatedStateId", Desc = "State Description", DefaultValue = "default value" });
       };
 
       // On Action Event
       messageProcessor.OnActionEvent += (actionId, dataList) => {
-        Console.WriteLine($"{DateTime.Now} Action Event Fired.");
-        foreach (var o in dataList) {
-          Console.WriteLine($"Id: {o.Id} Value: {o.Value}");
-        }
       };
 
       // On List Change Event
-      messageProcessor.OnListChangeEventHandler += (actionId, value) => {
-        Console.WriteLine($"{DateTime.Now} Choice Event Fired.");
+      messageProcessor.OnListChangeEventHandler += (actionId, listId, instanceId, value) => {
       };
 
       // On Plugin Disconnect
       messageProcessor.OnCloseEventHandler += () => {
-        Console.Write($"{DateTime.Now} Plugin Quit Command");
+        messageProcessor.RemoveState(new StateRemove { Id = "CreatedStateId" });
       };
 
       // Send State Update
-      messageProcessor.UpdateState(new StateUpdate() { Id = "SomeStateId", Value = "New Value" });
+      messageProcessor.UpdateState(new StateUpdate { Id = "SomeStateId", Value = "New Value" });
 
       // Run Listen and pairing
       Task.WhenAll(new Task[] {

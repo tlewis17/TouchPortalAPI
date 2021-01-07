@@ -10,7 +10,7 @@ namespace TouchPortalApi.Wrappers {
   /// Socket Wrapper
   /// </summary>
   public class TPSocket : ITPSocket {
-    private Socket _socket;
+    private readonly Socket _socket;
 
     // Default Constructor for dependency injection
     public TPSocket() {}
@@ -53,10 +53,21 @@ namespace TouchPortalApi.Wrappers {
     }
 
     /// <summary>
-    /// Dispose the socket
+    /// Dispose of Socket 
     /// </summary>
-    public virtual void Dispose() {
-      _socket.Dispose();
+    public void Dispose() {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Cleanup resources
+    /// </summary>
+    /// <param name="disposing"></param>
+    protected virtual void Dispose(bool disposing) {
+      if (disposing && _socket != null) {
+        _socket.Dispose();
+      }
     }
 
     /// <summary>

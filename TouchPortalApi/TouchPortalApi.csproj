@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <AssemblyVersion>0.3.2.0</AssemblyVersion>
-    <Version>0.3.2</Version>
+    <AssemblyVersion>0.3.3.0</AssemblyVersion>
+    <Version>0.3.3</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Nickname Pending</Authors>
     <Product>TouchPortalApi-SDK</Product>
@@ -13,7 +13,7 @@
     <Description>This is an SDK to interface with Touch Portal to aid in the development of C# based Plugins.</Description>
     <Copyright>2020</Copyright>
     <NeutralLanguage></NeutralLanguage>
-    <FileVersion>0.3.2.0</FileVersion>
+    <FileVersion>0.3.3.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

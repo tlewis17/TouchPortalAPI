@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Buffers;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using TouchPortalApi.Configuration;
@@ -28,6 +29,7 @@ namespace TouchPortalApi {
     public event ListChangeEventHandler OnListChangeEventHandler;
     public event CloseEventHandler OnCloseEventHandler;
     public event ConnectEventHandler OnConnectEventHandler;
+    public event SettingEventHandler OnSettingEventHandler;
 
     #endregion
 
@@ -91,7 +93,10 @@ namespace TouchPortalApi {
 
         switch (responseModel.Type.ToLower().Trim()) {
           case "info":
-            HandlePairEvent(JsonConvert.DeserializeObject<PairResponse>(result));
+            PairResponse pairResponse = JsonConvert.DeserializeObject<PairResponse>(result);
+            HandlePairEvent(pairResponse);
+            if(pairResponse.Settings != null)
+              HandleSettingEvent(pairResponse.Settings);
             break;
           case "action":
             HandleActionEvent(JsonConvert.DeserializeObject<TPAction>(result));
@@ -101,6 +106,9 @@ namespace TouchPortalApi {
             break;
           case "closeplugin":
             HandleCloseEvent();
+            break;
+          case "settings":
+            HandleSettingEvent(JsonConvert.DeserializeObject<TPSettingChange>(result).Values);
             break;
           default:
             Console.WriteLine($"No operation defined for: {responseModel.Type.ToLower().Trim()}");
@@ -122,6 +130,15 @@ namespace TouchPortalApi {
 
         OnConnectEventHandler?.Invoke();
       }
+    }
+
+    /// <summary>
+    /// Handle connect event
+    /// </summary>
+    /// <param name="response">The TP Pair Response</param>
+    private void HandleSettingEvent(List<Dictionary<string, dynamic>> settings) {
+      // Good pairing message returned
+      OnSettingEventHandler?.Invoke(settings);
     }
 
     /// <summary>

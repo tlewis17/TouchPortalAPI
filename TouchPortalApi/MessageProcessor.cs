@@ -30,6 +30,7 @@ namespace TouchPortalApi {
     public event CloseEventHandler OnCloseEventHandler;
     public event ConnectEventHandler OnConnectEventHandler;
     public event SettingEventHandler OnSettingEventHandler;
+    public event BroadcastEventHandler OnBroadcastEventHandler;
 
     #endregion
 
@@ -95,8 +96,9 @@ namespace TouchPortalApi {
           case "info":
             PairResponse pairResponse = JsonConvert.DeserializeObject<PairResponse>(result);
             HandlePairEvent(pairResponse);
-            if(pairResponse.Settings != null)
-              HandleSettingEvent(pairResponse.Settings);
+            if(pairResponse.Settings != null) {
+               HandleSettingEvent(new TPSettingChange { Values = pairResponse.Settings });
+            }
             break;
           case "action":
             HandleActionEvent(JsonConvert.DeserializeObject<TPAction>(result));
@@ -108,7 +110,10 @@ namespace TouchPortalApi {
             HandleCloseEvent();
             break;
           case "settings":
-            HandleSettingEvent(JsonConvert.DeserializeObject<TPSettingChange>(result).Values);
+            HandleSettingEvent(JsonConvert.DeserializeObject<TPSettingChange>(result));
+            break;
+          case "broadcast":
+            HandleBroadcastEvent(JsonConvert.DeserializeObject<TPBroadcast>(result));
             break;
           default:
             Console.WriteLine($"No operation defined for: {responseModel.Type.ToLower().Trim()}");
@@ -133,12 +138,19 @@ namespace TouchPortalApi {
     }
 
     /// <summary>
-    /// Handle connect event
+    /// Handle setting event
     /// </summary>
     /// <param name="response">The TP Pair Response</param>
-    private void HandleSettingEvent(List<Dictionary<string, dynamic>> settings) {
-      // Good pairing message returned
-      OnSettingEventHandler?.Invoke(settings);
+    private void HandleSettingEvent(TPSettingChange setting) {
+      OnSettingEventHandler?.Invoke(setting.Values);
+    }
+
+    /// <summary>
+    /// Handle broadcast event
+    /// </summary>
+    /// <param name="response">The TP Pair Response</param>
+    private void HandleBroadcastEvent(TPBroadcast broadcast) {
+      OnBroadcastEventHandler?.Invoke(broadcast.Event, broadcast.PageName);
     }
 
     /// <summary>

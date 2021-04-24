@@ -2,7 +2,7 @@
 
 namespace TouchPortalApi.Models.TouchPortal.Responses {
   /// <summary>
-  /// Class for the TP Response type of List Change
+  /// Class for the TP Response type of Setting Change
   /// </summary>
   /// 
   internal class TPSettingChange : TPShared {

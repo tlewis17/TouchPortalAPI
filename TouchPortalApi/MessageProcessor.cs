@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using TouchPortalApi.Configuration;
@@ -32,6 +33,7 @@ namespace TouchPortalApi {
     public event ConnectEventHandler OnConnectEventHandler;
     public event SettingEventHandler OnSettingEventHandler;
     public event BroadcastEventHandler OnBroadcastEventHandler;
+    public event ExitHandler OnExitHandler;
 
     #endregion
 
@@ -65,6 +67,9 @@ namespace TouchPortalApi {
       while (!_cancellationToken.IsCancellationRequested) {
         try {
           await _tPClient.ProcessPipes();
+        } catch (SocketException) {
+          OnExitHandler?.Invoke();
+          return;
         } catch (Exception ex) {
           Console.WriteLine(ex);
         }

@@ -10,6 +10,7 @@ namespace TouchPortalApi.Interfaces {
   public delegate void ConnectEventHandler();
   public delegate void SettingEventHandler(List<Dictionary<string, dynamic>> settings);
   public delegate void BroadcastEventHandler(string eventType, string pageName);
+  public delegate void ExitHandler();
 
   public interface IMessageProcessor {
     event ActionEventHandler OnActionEvent;
@@ -19,6 +20,7 @@ namespace TouchPortalApi.Interfaces {
     event ConnectEventHandler OnConnectEventHandler;
     event SettingEventHandler OnSettingEventHandler;
     event BroadcastEventHandler OnBroadcastEventHandler;
+    event ExitHandler OnExitHandler;
 
     Task Listen();
     Task TryPairAsync();

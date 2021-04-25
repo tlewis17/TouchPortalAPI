@@ -147,7 +147,7 @@ namespace TouchPortalApi {
     /// <summary>
     /// Handle setting event
     /// </summary>
-    /// <param name="response">The TP Pair Response</param>
+    /// <param name="setting">The new settings</param>
     private void HandleSettingEvent(TPSettingChange setting) {
       OnSettingEventHandler?.Invoke(setting.Values);
     }
@@ -155,7 +155,7 @@ namespace TouchPortalApi {
     /// <summary>
     /// Handle broadcast event
     /// </summary>
-    /// <param name="response">The TP Pair Response</param>
+    /// <param name="broadcast">The broadcast event</param>
     private void HandleBroadcastEvent(TPBroadcast broadcast) {
       OnBroadcastEventHandler?.Invoke(broadcast.Event, broadcast.PageName);
     }
@@ -172,6 +172,7 @@ namespace TouchPortalApi {
     /// Handle an on hold event
     /// </summary>
     /// <param name="action">The action being triggered</param>
+    /// <param name="held">True if held, false when released</param>
     private void HandleHoldActionEvent(TPAction action, bool held) {
       OnHoldActionEvent?.Invoke(action.ActionId, held, action.Data);
     }

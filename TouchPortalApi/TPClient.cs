@@ -5,6 +5,7 @@ using System;
 using System.Buffers;
 using System.IO.Pipelines;
 using System.Net;
+using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -85,6 +86,8 @@ namespace TouchPortalApi {
       Task reading = ReadPipeAsync(pipe.Reader);
 
       await Task.WhenAll(reading, writing).ConfigureAwait(false);
+      if(!_tpsocket.Connected)
+        throw new SocketException();
     }
 
     /// <summary>

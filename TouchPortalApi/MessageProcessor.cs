@@ -26,6 +26,7 @@ namespace TouchPortalApi {
     #region Event Handlers
 
     public event ActionEventHandler OnActionEvent;
+    public event HoldActionEventHandler OnHoldActionEvent;
     public event ListChangeEventHandler OnListChangeEventHandler;
     public event CloseEventHandler OnCloseEventHandler;
     public event ConnectEventHandler OnConnectEventHandler;
@@ -115,6 +116,12 @@ namespace TouchPortalApi {
           case "broadcast":
             HandleBroadcastEvent(JsonConvert.DeserializeObject<TPBroadcast>(result));
             break;
+          case "up":
+            HandleHoldActionEvent(JsonConvert.DeserializeObject<TPAction>(result), false);
+            break;
+          case "down":
+            HandleHoldActionEvent(JsonConvert.DeserializeObject<TPAction>(result), true);
+            break;
           default:
             Console.WriteLine($"No operation defined for: {responseModel.Type.ToLower().Trim()}");
             break;
@@ -159,6 +166,14 @@ namespace TouchPortalApi {
     /// <param name="action">The action being triggered</param>
     private void HandleActionEvent(TPAction action) {
       OnActionEvent?.Invoke(action.ActionId, action.Data);
+    }
+
+    /// <summary>
+    /// Handle an on hold event
+    /// </summary>
+    /// <param name="action">The action being triggered</param>
+    private void HandleHoldActionEvent(TPAction action, bool held) {
+      OnHoldActionEvent?.Invoke(action.ActionId, held, action.Data);
     }
 
     /// <summary>

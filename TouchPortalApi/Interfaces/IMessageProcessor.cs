@@ -4,6 +4,7 @@ using TouchPortalApi.Models;
 
 namespace TouchPortalApi.Interfaces {
   public delegate void ActionEventHandler(string actionId, List<ActionData> dataList);
+  public delegate void HoldActionEventHandler(string actionId, bool held, List<ActionData> dataList);
   public delegate void ListChangeEventHandler(string actionId, string listId, string instanceId, string value);
   public delegate void CloseEventHandler();
   public delegate void ConnectEventHandler();
@@ -12,6 +13,7 @@ namespace TouchPortalApi.Interfaces {
 
   public interface IMessageProcessor {
     event ActionEventHandler OnActionEvent;
+    event HoldActionEventHandler OnHoldActionEvent;
     event ListChangeEventHandler OnListChangeEventHandler;
     event CloseEventHandler OnCloseEventHandler;
     event ConnectEventHandler OnConnectEventHandler;

@@ -9,5 +9,6 @@ namespace TouchPortalApi.Models
         public string Id { get; set; }
         public string Desc { get; set; }
         public string DefaultValue { get; set; }
+        public string ParentGroup { get; set; }
     }
 }

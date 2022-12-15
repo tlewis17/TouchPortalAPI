@@ -14,6 +14,7 @@
     <Copyright>2020</Copyright>
     <NeutralLanguage></NeutralLanguage>
     <FileVersion>0.3.3.0</FileVersion>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using System;
 using System.Buffers;
+using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using TouchPortalApi.Configuration;
@@ -25,9 +27,13 @@ namespace TouchPortalApi {
     #region Event Handlers
 
     public event ActionEventHandler OnActionEvent;
+    public event HoldActionEventHandler OnHoldActionEvent;
     public event ListChangeEventHandler OnListChangeEventHandler;
     public event CloseEventHandler OnCloseEventHandler;
     public event ConnectEventHandler OnConnectEventHandler;
+    public event SettingEventHandler OnSettingEventHandler;
+    public event BroadcastEventHandler OnBroadcastEventHandler;
+    public event ExitHandler OnExitHandler;
 
     #endregion
 
@@ -61,6 +67,9 @@ namespace TouchPortalApi {
       while (!_cancellationToken.IsCancellationRequested) {
         try {
           await _tPClient.ProcessPipes();
+        } catch (SocketException) {
+          OnExitHandler?.Invoke();
+          return;
         } catch (Exception ex) {
           Console.WriteLine(ex);
         }
@@ -91,7 +100,11 @@ namespace TouchPortalApi {
 
         switch (responseModel.Type.ToLower().Trim()) {
           case "info":
-            HandlePairEvent(JsonConvert.DeserializeObject<PairResponse>(result));
+            PairResponse pairResponse = JsonConvert.DeserializeObject<PairResponse>(result);
+            HandlePairEvent(pairResponse);
+            if(pairResponse.Settings != null) {
+               HandleSettingEvent(new TPSettingChange { Values = pairResponse.Settings });
+            }
             break;
           case "action":
             HandleActionEvent(JsonConvert.DeserializeObject<TPAction>(result));
@@ -101,6 +114,18 @@ namespace TouchPortalApi {
             break;
           case "closeplugin":
             HandleCloseEvent();
+            break;
+          case "settings":
+            HandleSettingEvent(JsonConvert.DeserializeObject<TPSettingChange>(result));
+            break;
+          case "broadcast":
+            HandleBroadcastEvent(JsonConvert.DeserializeObject<TPBroadcast>(result));
+            break;
+          case "up":
+            HandleHoldActionEvent(JsonConvert.DeserializeObject<TPAction>(result), false);
+            break;
+          case "down":
+            HandleHoldActionEvent(JsonConvert.DeserializeObject<TPAction>(result), true);
             break;
           default:
             Console.WriteLine($"No operation defined for: {responseModel.Type.ToLower().Trim()}");
@@ -125,11 +150,36 @@ namespace TouchPortalApi {
     }
 
     /// <summary>
+    /// Handle setting event
+    /// </summary>
+    /// <param name="setting">The new settings</param>
+    private void HandleSettingEvent(TPSettingChange setting) {
+      OnSettingEventHandler?.Invoke(setting.Values);
+    }
+
+    /// <summary>
+    /// Handle broadcast event
+    /// </summary>
+    /// <param name="broadcast">The broadcast event</param>
+    private void HandleBroadcastEvent(TPBroadcast broadcast) {
+      OnBroadcastEventHandler?.Invoke(broadcast.Event, broadcast.PageName);
+    }
+
+    /// <summary>
     /// Handle an action event
     /// </summary>
     /// <param name="action">The action being triggered</param>
     private void HandleActionEvent(TPAction action) {
       OnActionEvent?.Invoke(action.ActionId, action.Data);
+    }
+
+    /// <summary>
+    /// Handle an on hold event
+    /// </summary>
+    /// <param name="action">The action being triggered</param>
+    /// <param name="held">True if held, false when released</param>
+    private void HandleHoldActionEvent(TPAction action, bool held) {
+      OnHoldActionEvent?.Invoke(action.ActionId, held, action.Data);
     }
 
     /// <summary>
